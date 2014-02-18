@@ -36,7 +36,7 @@
             this.btnLogin = new System.Windows.Forms.Button();
             this.pnlUpload = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtImagePath = new System.Windows.Forms.TextBox();
             this.btnChooseImage = new System.Windows.Forms.Button();
             this.btnUpload = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -80,7 +80,7 @@
             this.txtUserName.Location = new System.Drawing.Point(89, 28);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(160, 21);
-            this.txtUserName.TabIndex = 2;
+            this.txtUserName.TabIndex = 1;
             // 
             // txtPwd
             // 
@@ -106,7 +106,7 @@
             this.pnlUpload.Controls.Add(this.label4);
             this.pnlUpload.Controls.Add(this.btnUpload);
             this.pnlUpload.Controls.Add(this.btnChooseImage);
-            this.pnlUpload.Controls.Add(this.textBox1);
+            this.pnlUpload.Controls.Add(this.txtImagePath);
             this.pnlUpload.Controls.Add(this.label3);
             this.pnlUpload.Location = new System.Drawing.Point(311, 13);
             this.pnlUpload.Name = "pnlUpload";
@@ -123,14 +123,14 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "图片选择：";
             // 
-            // textBox1
+            // txtImagePath
             // 
-            this.textBox1.BackColor = System.Drawing.Color.White;
-            this.textBox1.Location = new System.Drawing.Point(15, 52);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(211, 21);
-            this.textBox1.TabIndex = 1;
+            this.txtImagePath.BackColor = System.Drawing.Color.White;
+            this.txtImagePath.Location = new System.Drawing.Point(15, 52);
+            this.txtImagePath.Name = "txtImagePath";
+            this.txtImagePath.ReadOnly = true;
+            this.txtImagePath.Size = new System.Drawing.Size(211, 21);
+            this.txtImagePath.TabIndex = 1;
             // 
             // btnChooseImage
             // 
@@ -140,6 +140,7 @@
             this.btnChooseImage.TabIndex = 2;
             this.btnChooseImage.Text = "浏览";
             this.btnChooseImage.UseVisualStyleBackColor = true;
+            this.btnChooseImage.Click += new System.EventHandler(this.btnChooseImage_Click);
             // 
             // btnUpload
             // 
@@ -149,7 +150,7 @@
             this.btnUpload.TabIndex = 3;
             this.btnUpload.Text = "上  传";
             this.btnUpload.UseVisualStyleBackColor = true;
-            this.btnUpload.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
             // 
             // label4
             // 
@@ -169,9 +170,10 @@
             // 
             // Form1
             // 
+            this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(640, 239);
+            this.ClientSize = new System.Drawing.Size(348, 239);
             this.Controls.Add(this.pnlUpload);
             this.Controls.Add(this.pnlLogin);
             this.Name = "Form1";
@@ -196,7 +198,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnUpload;
         private System.Windows.Forms.Button btnChooseImage;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtImagePath;
         private System.Windows.Forms.TextBox txtImageUrl;
         private System.Windows.Forms.Label label4;
     }
