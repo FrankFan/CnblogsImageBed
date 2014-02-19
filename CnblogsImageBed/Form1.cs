@@ -71,7 +71,8 @@ namespace CnblogsImageBed
             //25661
 
 
-            string html = HttpHelper.HttpPostWithCookie(url, filePath, cc);
+            //string html = HttpHelper.HttpPostWithCookie(url, filePath, cc);
+            string html = HttpHelper.HttpPost(url, filePath, cc);
 
 
         }

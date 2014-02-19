@@ -142,9 +142,13 @@ namespace CnblogsImageBed
             //Encoding.UTF8.GetByteCount(postedData);
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
             request.Accept = "*/*";
+            request.Referer = "http://upload.cnblogs.com/imageuploader/upload";
+            request.KeepAlive = true;
 
             //set cookie
             request.CookieContainer = cc;
+            
+            
 
 
 
@@ -188,6 +192,70 @@ namespace CnblogsImageBed
             return html;
         }
 
+        public static string HttpPost(string url, string postedFile, CookieContainer cc)
+        {
 
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.CookieContainer = cc;
+            request.Referer = "http://upload.cnblogs.com/imageuploader/upload";
+            request.Accept = "*/*";
+            request.Headers["Accept-Language"] = "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4";
+            request.Headers["Accept-Charset"] = "gzip,deflate,sdch";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
+            request.KeepAlive = true;
+
+            request.ContentType = "application/octet-stream";
+            request.Method = "POST";
+
+            //根据网站的编码自定义
+            Encoding encoding = Encoding.UTF8;
+            //postDataStr即为发送的数据，格式还是和上次说的一样
+            byte[] postData = FileContent(postedFile);
+
+            request.ContentLength = postData.Length;
+
+            //request
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(postData, 0, postData.Length);
+
+            //response
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream responseStream = response.GetResponseStream();
+
+            StreamReader streamReader = new StreamReader(responseStream, encoding);
+            string retString = streamReader.ReadToEnd();
+
+            //关闭资源
+            streamReader.Close();
+            responseStream.Close();
+
+
+            return retString;
+        }
+
+        private static byte[] FileContent(string filePath)
+        {
+            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            byte[] buffer = new byte[fs.Length];
+
+            try
+            {
+                fs.Read(buffer, 0, (int)fs.Length);
+
+                return buffer;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (fs!=null)
+                {
+                    //关闭资源
+                    fs.Close();
+                }
+            }
+        }
     }
 }
