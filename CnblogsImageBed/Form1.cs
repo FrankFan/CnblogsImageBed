@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Net;
+using System.Web.Script.Serialization; //需要添加对System.Web.Extensions添加dll引用
 
 namespace CnblogsImageBed
 {
@@ -73,6 +68,16 @@ namespace CnblogsImageBed
 
             //string html = HttpHelper.HttpPostWithCookie(url, filePath, cc);
             string html = HttpHelper.HttpPost(url, filePath, cc);
+
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            ImageEntity ie = jss.Deserialize<ImageEntity>(html);
+
+            if (ie.Success==true)
+            {
+                this.txtImageUrl.Text = ie.Message;
+                this.txtImageUrl.Focus();
+                this.txtImageUrl.SelectAll();
+            }
 
 
         }
