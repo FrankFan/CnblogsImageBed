@@ -5,6 +5,9 @@ using System.Text;
 
 namespace CnblogsImageBed
 {
+	/*
+	* Http Header实体类
+	*/
     public class HttpHeader
     {
         public string Accept { get; set; }

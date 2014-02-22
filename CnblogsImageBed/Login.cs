@@ -6,6 +6,7 @@ using System.Net;
 
 namespace CnblogsImageBed
 {
+	//博客园登陆类
     public class Login
     {
         //全局变量保存cookie信息

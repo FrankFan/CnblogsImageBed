@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CnblogsImageBed
 {
+    //图片返回信息实体类
     public class ImageEntity
     {
         public bool Success { get; set; }
