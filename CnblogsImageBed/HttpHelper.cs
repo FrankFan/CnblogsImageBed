@@ -147,10 +147,6 @@ namespace CnblogsImageBed
 
             //set cookie
             request.CookieContainer = cc;
-            
-            
-
-
 
 
             try
@@ -233,6 +229,11 @@ namespace CnblogsImageBed
             return retString;
         }
 
+        /// <summary>
+        /// 将指定路径的文件转化为字节流
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         private static byte[] FileContent(string filePath)
         {
             FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);

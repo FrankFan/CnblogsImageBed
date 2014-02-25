@@ -28,19 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pnlLogin = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtUserName = new System.Windows.Forms.TextBox();
-            this.txtPwd = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
+            this.txtPwd = new System.Windows.Forms.TextBox();
+            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlUpload = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtImagePath = new System.Windows.Forms.TextBox();
-            this.btnChooseImage = new System.Windows.Forms.Button();
-            this.btnUpload = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.txtImageUrl = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnUpload = new System.Windows.Forms.Button();
+            this.btnChooseImage = new System.Windows.Forms.Button();
+            this.txtImagePath = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.pnlLogin.SuspendLayout();
             this.pnlUpload.SuspendLayout();
             this.SuspendLayout();
@@ -57,14 +58,30 @@
             this.pnlLogin.Size = new System.Drawing.Size(268, 181);
             this.pnlLogin.TabIndex = 0;
             // 
-            // label1
+            // btnLogin
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 37);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "用户名：";
+            this.btnLogin.Location = new System.Drawing.Point(89, 106);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(75, 23);
+            this.btnLogin.TabIndex = 3;
+            this.btnLogin.Text = "登  录";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // txtPwd
+            // 
+            this.txtPwd.Location = new System.Drawing.Point(89, 66);
+            this.txtPwd.Name = "txtPwd";
+            this.txtPwd.PasswordChar = '●';
+            this.txtPwd.Size = new System.Drawing.Size(160, 21);
+            this.txtPwd.TabIndex = 2;
+            // 
+            // txtUserName
+            // 
+            this.txtUserName.Location = new System.Drawing.Point(89, 28);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(160, 21);
+            this.txtUserName.TabIndex = 1;
             // 
             // label2
             // 
@@ -75,30 +92,14 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "密码：";
             // 
-            // txtUserName
+            // label1
             // 
-            this.txtUserName.Location = new System.Drawing.Point(89, 28);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(160, 21);
-            this.txtUserName.TabIndex = 1;
-            // 
-            // txtPwd
-            // 
-            this.txtPwd.Location = new System.Drawing.Point(89, 66);
-            this.txtPwd.Name = "txtPwd";
-            this.txtPwd.PasswordChar = '●';
-            this.txtPwd.Size = new System.Drawing.Size(160, 21);
-            this.txtPwd.TabIndex = 2;
-            // 
-            // btnLogin
-            // 
-            this.btnLogin.Location = new System.Drawing.Point(89, 106);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(75, 23);
-            this.btnLogin.TabIndex = 3;
-            this.btnLogin.Text = "登  录";
-            this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 37);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "用户名：";
             // 
             // pnlUpload
             // 
@@ -114,33 +115,21 @@
             this.pnlUpload.TabIndex = 1;
             this.pnlUpload.Visible = false;
             // 
-            // label3
+            // txtImageUrl
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "图片选择：";
+            this.txtImageUrl.Location = new System.Drawing.Point(15, 159);
+            this.txtImageUrl.Name = "txtImageUrl";
+            this.txtImageUrl.Size = new System.Drawing.Size(293, 21);
+            this.txtImageUrl.TabIndex = 5;
             // 
-            // txtImagePath
+            // label4
             // 
-            this.txtImagePath.BackColor = System.Drawing.Color.White;
-            this.txtImagePath.Location = new System.Drawing.Point(15, 52);
-            this.txtImagePath.Name = "txtImagePath";
-            this.txtImagePath.ReadOnly = true;
-            this.txtImagePath.Size = new System.Drawing.Size(211, 21);
-            this.txtImagePath.TabIndex = 1;
-            // 
-            // btnChooseImage
-            // 
-            this.btnChooseImage.Location = new System.Drawing.Point(244, 52);
-            this.btnChooseImage.Name = "btnChooseImage";
-            this.btnChooseImage.Size = new System.Drawing.Size(64, 23);
-            this.btnChooseImage.TabIndex = 2;
-            this.btnChooseImage.Text = "浏览";
-            this.btnChooseImage.UseVisualStyleBackColor = true;
-            this.btnChooseImage.Click += new System.EventHandler(this.btnChooseImage_Click);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 135);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 12);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "图片url：";
             // 
             // btnUpload
             // 
@@ -152,21 +141,33 @@
             this.btnUpload.UseVisualStyleBackColor = true;
             this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
             // 
-            // label4
+            // btnChooseImage
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 135);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 12);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "图片url：";
+            this.btnChooseImage.Location = new System.Drawing.Point(244, 52);
+            this.btnChooseImage.Name = "btnChooseImage";
+            this.btnChooseImage.Size = new System.Drawing.Size(64, 23);
+            this.btnChooseImage.TabIndex = 2;
+            this.btnChooseImage.Text = "浏览";
+            this.btnChooseImage.UseVisualStyleBackColor = true;
+            this.btnChooseImage.Click += new System.EventHandler(this.btnChooseImage_Click);
             // 
-            // txtImageUrl
+            // txtImagePath
             // 
-            this.txtImageUrl.Location = new System.Drawing.Point(15, 159);
-            this.txtImageUrl.Name = "txtImageUrl";
-            this.txtImageUrl.Size = new System.Drawing.Size(293, 21);
-            this.txtImageUrl.TabIndex = 5;
+            this.txtImagePath.BackColor = System.Drawing.Color.White;
+            this.txtImagePath.Location = new System.Drawing.Point(15, 52);
+            this.txtImagePath.Name = "txtImagePath";
+            this.txtImagePath.ReadOnly = true;
+            this.txtImagePath.Size = new System.Drawing.Size(211, 21);
+            this.txtImagePath.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 27);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "图片选择：";
             // 
             // Form1
             // 
@@ -176,8 +177,9 @@
             this.ClientSize = new System.Drawing.Size(348, 239);
             this.Controls.Add(this.pnlUpload);
             this.Controls.Add(this.pnlLogin);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "博客园图床";
+            this.Text = "博客园图床 v1.0";
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
             this.pnlUpload.ResumeLayout(false);

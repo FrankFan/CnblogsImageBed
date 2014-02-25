@@ -13,6 +13,10 @@ namespace CnblogsImageBed
         public Form1()
         {
             InitializeComponent();
+
+            //设置窗体样式
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -20,6 +24,9 @@ namespace CnblogsImageBed
             DoLoginCnblogs();
         }
 
+        /// <summary>
+        /// 登录博客园的方法
+        /// </summary>
         protected void DoLoginCnblogs()
         {
             string userName = this.txtUserName.Text.Trim();
@@ -47,13 +54,18 @@ namespace CnblogsImageBed
         {
             //选择要上传的图片
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
+            ofd.Filter = "Image Files(*.BMP;*.JPG;*.PNG;*.GIF)|*.BMP;*.JPG;*.PNG;*.GIF|All files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 this.txtImagePath.Text = ofd.FileName;
             }
         }
 
+        /// <summary>
+        /// 上传图片事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUpload_Click(object sender, EventArgs e)
         {
             //1.拿到本地图片路径
@@ -63,20 +75,22 @@ namespace CnblogsImageBed
 
             string url = "http://upload.cnblogs.com/imageuploader/processupload?host=&qqfile=11.jpg";
             string filePath = this.txtImagePath.Text.Trim();
-            //25661
 
-
-            //string html = HttpHelper.HttpPostWithCookie(url, filePath, cc);
             string html = HttpHelper.HttpPost(url, filePath, cc);
 
+            //将post得到的response值反序列化为Image实体对象
             JavaScriptSerializer jss = new JavaScriptSerializer();
             ImageEntity ie = jss.Deserialize<ImageEntity>(html);
 
-            if (ie.Success==true)
+            if (ie.Success == true)
             {
                 this.txtImageUrl.Text = ie.Message;
                 this.txtImageUrl.Focus();
                 this.txtImageUrl.SelectAll();
+            }
+            else
+            {
+                this.txtImageUrl.Text = "图片上传失败!";
             }
 
 
