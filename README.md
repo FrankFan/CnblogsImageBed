@@ -9,3 +9,4 @@ CnblogsImageBed——A place to store images.
 * <del>获得图片外链地址</del>
 * 记住登陆账号7天、15天等
 * Drag&Drop,拖拽式上传
+* 后续继续优化
