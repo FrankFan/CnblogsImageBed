@@ -11,7 +11,6 @@ CnblogsImageBed——A place to store images.
 * Drag&Drop,拖拽式上传
 * 后续继续优化
 
-制作详细过程请移步 ![http://www.cnblogs.com/fanyong/p/3574134.html][1]
+制作详细过程请移步 http://www.cnblogs.com/fanyong/p/3574134.html
 
 
-[1]: http://www.cnblogs.com/fanyong/p/3574134.html
