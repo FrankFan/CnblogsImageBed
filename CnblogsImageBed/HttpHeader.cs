@@ -19,5 +19,17 @@ namespace CnblogsImageBed
         public int MaxTry { get; set; }
 
         public string UserAgent { get; set; }
+
+        public string AcceptEncoding { get; set; }
+
+        public string AcceptLanguage { get; set; }
+
+        public string CacheControl { get; set; }
+
+        public string Connection { get; set; }
+
+
+
+
     }
 }

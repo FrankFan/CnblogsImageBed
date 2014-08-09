@@ -16,11 +16,12 @@ namespace CnblogsImageBed
         /// <param name="postedData"></param>
         /// <param name="header"></param>
         /// <returns></returns>
-        public static CookieContainer GetCookie(string loginUrl, string postedData, HttpHeader header)
+        public static CookieContainer GetCookie(string loginUrl, string postedData, HttpHeader header, out string cookieStr)
         {
             HttpWebRequest request = null;
             HttpWebResponse response = null;
             CookieContainer cc = new CookieContainer();
+            cookieStr = string.Empty;
 
             try
             {
@@ -33,7 +34,7 @@ namespace CnblogsImageBed
                 request.CookieContainer = cc;
                 request.KeepAlive = true;
                 request.AllowAutoRedirect = false;
-
+                
                 //提交请求
                 Stream requestStream = request.GetRequestStream();
                 requestStream.Write(postDataByte, 0, postDataByte.Length);
@@ -41,11 +42,14 @@ namespace CnblogsImageBed
 
                 //接收响应
                 response = (HttpWebResponse)request.GetResponse();
-                response.Cookies = request.CookieContainer.GetCookies(request.RequestUri);
+                //response.Cookies = request.CookieContainer.GetCookies(request.RequestUri);
+                response.Cookies = cc.GetCookies(request.RequestUri);
 
                 CookieCollection cookieCollection = response.Cookies;
 
                 cc.Add(cookieCollection);
+
+                cookieStr = request.CookieContainer.GetCookieHeader(request.RequestUri);
 
             }
             catch (Exception ex)
@@ -62,7 +66,7 @@ namespace CnblogsImageBed
         /// <param name="cc">cookie</param>
         /// <param name="header">请求Header对象</param>
         /// <returns>页面源代码html</returns>
-        public static string GetHtmlByCookie(string url, CookieContainer cc, HttpHeader header)
+        public static string GetHtmlByCookie(string url, CookieContainer cc, HttpHeader header,string cookieStr)
         {
             string html = string.Empty;
             HttpWebRequest request = null;
@@ -75,11 +79,11 @@ namespace CnblogsImageBed
                 request = (HttpWebRequest)WebRequest.Create(url);
                 request.CookieContainer = cc;
                 request.ContentType = header.ContentType;
-                //request.ServicePoint.ConnectionLimit = header.MaxTry;
                 request.Referer = url;
                 request.Accept = header.Accept;
                 request.UserAgent = header.UserAgent;
                 request.Method = "GET";
+                request.Headers.Add("Cookie:" + cookieStr); //每次请求时把cookie传给服务器
 
                 //发起请求，得到Response
                 response = (HttpWebResponse)request.GetResponse();
@@ -87,7 +91,7 @@ namespace CnblogsImageBed
                 streamReader = new StreamReader(responseStream, Encoding.UTF8);
                 html = streamReader.ReadToEnd();
 
-
+                cookieStr = request.CookieContainer.GetCookieHeader(request.RequestUri);
             }
             catch (Exception ex)
             {
@@ -108,11 +112,16 @@ namespace CnblogsImageBed
                 request.Abort();
                 response.Close();
             }
-
-
             return html;
         }
 
+        /// <summary>
+        /// 此方法未用到
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="filePath"></param>
+        /// <param name="cc"></param>
+        /// <returns></returns>
         public static string HttpPostWithCookie(string url, string filePath, CookieContainer cc)
         {
             string html = string.Empty;
@@ -128,21 +137,16 @@ namespace CnblogsImageBed
 
             FileStream fStream = new FileStream(filePath, FileMode.Open);
             fStream.Read(bufPost, 0, fileLength);
-
-            //f = null;
-            //fStream = null;
-
-
+            
             //create a http web request
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             //set request type
             request.Method = "POST";
             request.ContentType = "application/octet-stream";
             request.ContentLength = bufPost.Length;
-            //Encoding.UTF8.GetByteCount(postedData);
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
             request.Accept = "*/*";
-            request.Referer = "http://upload.cnblogs.com/imageuploader/upload";
+            request.Referer = "http://upload.cnblogs.com/imageuploader/upload?host=www.cnblogs.com&editor=4";
             request.KeepAlive = true;
 
             //set cookie
@@ -183,23 +187,26 @@ namespace CnblogsImageBed
             {
                 throw ex;
             }
-
-
             return html;
         }
 
+        /// <summary>
+        /// 模拟ajax上传
+        /// </summary>
+        /// <param name="url">带Query String的url</param>
+        /// <param name="postedFile">post图片路径</param>
+        /// <param name="cc">Cookie容器</param>
+        /// <returns></returns>
         public static string HttpPost(string url, string postedFile, CookieContainer cc)
         {
-
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.CookieContainer = cc;
-            request.Referer = "http://upload.cnblogs.com/imageuploader/upload";
+            request.Referer = "http://upload.cnblogs.com/imageuploader/upload?host=www.cnblogs.com&editor=4";
             request.Accept = "*/*";
             request.Headers["Accept-Language"] = "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4";
             request.Headers["Accept-Charset"] = "gzip,deflate,sdch";
             request.UserAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
             request.KeepAlive = true;
-
             request.ContentType = "application/octet-stream";
             request.Method = "POST";
 
@@ -224,7 +231,6 @@ namespace CnblogsImageBed
             //关闭资源
             streamReader.Close();
             responseStream.Close();
-
 
             return retString;
         }

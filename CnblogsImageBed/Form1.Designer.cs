@@ -179,6 +179,7 @@
             this.Controls.Add(this.pnlLogin);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "博客园图床 v1.0";
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
