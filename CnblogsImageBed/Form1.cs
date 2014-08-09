@@ -40,10 +40,12 @@ namespace CnblogsImageBed
                 return;
             }
 
-            Thread thread = new Thread(new ThreadStart(DoLoginCnblogs));
-            thread.IsBackground = false;
-            thread.Start();
+            //Thread thread = new Thread(new ThreadStart(DoLoginCnblogs));
+            //thread.IsBackground = false;
+            //thread.Start();
 
+
+            DoLoginCnblogs();
 
             //防止登录没有返回homeCnblogsHtml时进入判断
             if (!string.IsNullOrEmpty(homeCnblogsHtml))
@@ -51,15 +53,23 @@ namespace CnblogsImageBed
                 if (homeCnblogsHtml.IndexOf("<title>首页 - 我的园子 - 博客园</title>") >= 0 ||
                         homeCnblogsHtml.Contains("编辑个人资料"))
                 {
-                    pnlUpload.Visible = true;
-                    pnlLogin.Visible = false;
-                    pnlUpload.Location = new System.Drawing.Point(10, 10);
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        pnlUpload.Visible = true;
+                        pnlLogin.Visible = false;
+                        pnlUpload.Location = new System.Drawing.Point(10, 10);
+                    }));
                 }
                 else
                 {
-                    MessageBox.Show("登陆失败", this.Text);
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        MessageBox.Show("登陆失败", this.Text);
+                    }));
                 }
             }
+
+
         }
 
         private void btnChooseImage_Click(object sender, EventArgs e)
@@ -83,12 +93,6 @@ namespace CnblogsImageBed
             cc = login.cc;
         }
 
-        protected void DoUploadImg()
-        {
-            string url = string.Format("http://upload.cnblogs.com/imageuploader/processupload?host={0}&qqfile={1}", HOST, imageNameWithExt);
-            uploadImgHtml = HttpHelper.HttpPost(url, localFilePath, cc);   
-        }
-
         /// <summary>
         /// 上传图片事件
         /// </summary>
@@ -96,44 +100,87 @@ namespace CnblogsImageBed
         /// <param name="e"></param>
         private void btnUpload_Click(object sender, EventArgs e)
         {
+
+            //开始执行，禁用按钮
+            this.BeginInvoke(new Action(() =>
+            {
+                this.btnUpload.Text = "上传ing...";
+                this.btnUpload.Enabled = false;
+            }));
+
+
             //1.拿到本地图片路径
             //2.发起http post请求
             //3.得到response的image url
             //4.赋值给txtImageUrl
 
-            localFilePath = this.txtImagePath.Text.Trim();
-
-            if (string.IsNullOrEmpty(localFilePath))
+            //使用线程池异步执行longTime方法，不阻塞UI线程
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
             {
-                MessageBox.Show("请选择图片", this.Text);
-                return;
-            }
+                localFilePath = this.txtImagePath.Text.Trim();
 
-            imageNameWithExt = localFilePath.Substring(localFilePath.LastIndexOf("\\") + 1);
-
-            //Thread thread = new Thread(new ThreadStart(DoUploadImg));
-            //thread.IsBackground = true;
-            //thread.Start();
-
-            DoUploadImg();
-
-            if (!string.IsNullOrEmpty(uploadImgHtml))
-            {
-                //将post得到的response值反序列化为Image实体对象
-                JavaScriptSerializer jss = new JavaScriptSerializer();
-                ImageEntity ie = jss.Deserialize<ImageEntity>(uploadImgHtml);
-
-                if (ie.Success == true)
+                if (string.IsNullOrEmpty(localFilePath))
                 {
-                    this.txtImageUrl.Text = ie.Message;
-                    this.txtImageUrl.Focus();
-                    this.txtImageUrl.SelectAll();
+                    this.BeginInvoke(new Action(() =>
+                   {
+                       MessageBox.Show("请选择图片", this.Text);
+                       return;
+                   }));
+                }
+
+                imageNameWithExt = localFilePath.Substring(localFilePath.LastIndexOf("\\") + 1);
+
+                //Thread thread = new Thread(new ThreadStart(DoUploadImg));
+                //thread.IsBackground = true;
+                //thread.Start();
+
+                string url = string.Format("http://upload.cnblogs.com/imageuploader/processupload?host={0}&qqfile={1}", HOST, imageNameWithExt);
+                uploadImgHtml = HttpHelper.HttpPost(url, localFilePath, cc);
+
+
+                if (!string.IsNullOrEmpty(uploadImgHtml))
+                {
+                    //将post得到的response值反序列化为Image实体对象
+                    JavaScriptSerializer jss = new JavaScriptSerializer();
+                    ImageEntity ie = jss.Deserialize<ImageEntity>(uploadImgHtml);
+
+                    if (ie != null && ie.Success == true)
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.txtImageUrl.Text = ie.Message;
+                            this.txtImageUrl.Focus();
+                            this.txtImageUrl.SelectAll();
+                            this.btnUpload.Text = "上传";
+                            this.btnUpload.Enabled = true;
+
+                        }));
+                    }
+                    else
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            this.txtImageUrl.Text = "图片上传失败! Error: " + ie.Message;
+                            this.btnUpload.Text = "上传";
+                            this.btnUpload.Enabled = true;
+                        }));
+                    }
                 }
                 else
                 {
-                    this.txtImageUrl.Text = "图片上传失败! Error: " + ie.Message;
-                } 
-            }
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        this.txtImageUrl.Text = "图片上传ing...";
+                    }));
+                }
+
+            });
+
+        }
+
+        private void lbReg_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://passport.cnblogs.com/register.aspx");  
         }
     }
 }

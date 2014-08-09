@@ -42,12 +42,14 @@
             this.btnChooseImage = new System.Windows.Forms.Button();
             this.txtImagePath = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.lbReg = new System.Windows.Forms.LinkLabel();
             this.pnlLogin.SuspendLayout();
             this.pnlUpload.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlLogin
             // 
+            this.pnlLogin.Controls.Add(this.lbReg);
             this.pnlLogin.Controls.Add(this.btnLogin);
             this.pnlLogin.Controls.Add(this.txtPwd);
             this.pnlLogin.Controls.Add(this.txtUserName);
@@ -60,7 +62,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(89, 106);
+            this.btnLogin.Location = new System.Drawing.Point(111, 107);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 3;
@@ -169,6 +171,17 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "图片选择：";
             // 
+            // lbReg
+            // 
+            this.lbReg.AutoSize = true;
+            this.lbReg.Location = new System.Drawing.Point(209, 160);
+            this.lbReg.Name = "lbReg";
+            this.lbReg.Size = new System.Drawing.Size(29, 12);
+            this.lbReg.TabIndex = 4;
+            this.lbReg.TabStop = true;
+            this.lbReg.Text = "注册";
+            this.lbReg.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbReg_LinkClicked);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btnLogin;
@@ -180,7 +193,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "博客园图床 v1.0";
+            this.Text = "博客园图床 v2.0";
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
             this.pnlUpload.ResumeLayout(false);
@@ -204,6 +217,7 @@
         private System.Windows.Forms.TextBox txtImagePath;
         private System.Windows.Forms.TextBox txtImageUrl;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.LinkLabel lbReg;
     }
 }
 

@@ -20,6 +20,7 @@ namespace CnblogsImageBed
         {
             HttpWebRequest request = null;
             HttpWebResponse response = null;
+            Stream requestStream = null;
             CookieContainer cc = new CookieContainer();
             cookieStr = string.Empty;
 
@@ -34,11 +35,10 @@ namespace CnblogsImageBed
                 request.CookieContainer = cc;
                 request.KeepAlive = true;
                 request.AllowAutoRedirect = false;
-                
+
                 //提交请求
-                Stream requestStream = request.GetRequestStream();
+                requestStream = request.GetRequestStream();
                 requestStream.Write(postDataByte, 0, postDataByte.Length);
-                requestStream.Close();
 
                 //接收响应
                 response = (HttpWebResponse)request.GetResponse();
@@ -56,6 +56,13 @@ namespace CnblogsImageBed
             {
                 throw ex;
             }
+            finally
+            {
+                request = null;
+                response.Close();
+                requestStream.Close();   
+            }
+
             return cc;
         }
 
@@ -106,7 +113,6 @@ namespace CnblogsImageBed
             finally
             {
                 //关闭各种资源
-
                 streamReader.Close();
                 responseStream.Close();
                 request.Abort();
@@ -199,6 +205,12 @@ namespace CnblogsImageBed
         /// <returns></returns>
         public static string HttpPost(string url, string postedFile, CookieContainer cc)
         {
+            string retString = string.Empty;
+            StreamReader streamReader = null;
+            Stream responseStream = null;
+
+            System.Net.ServicePointManager.DefaultConnectionLimit = 50;
+
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.CookieContainer = cc;
             request.Referer = "http://upload.cnblogs.com/imageuploader/upload?host=www.cnblogs.com&editor=4";
@@ -206,7 +218,8 @@ namespace CnblogsImageBed
             request.Headers["Accept-Language"] = "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4";
             request.Headers["Accept-Charset"] = "gzip,deflate,sdch";
             request.UserAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
-            request.KeepAlive = true;
+            request.KeepAlive = false;
+            request.ProtocolVersion = HttpVersion.Version10;
             request.ContentType = "application/octet-stream";
             request.Method = "POST";
 
@@ -216,21 +229,34 @@ namespace CnblogsImageBed
             byte[] postData = FileContent(postedFile);
 
             request.ContentLength = postData.Length;
+            try
+            {
+                System.GC.Collect();
 
-            //request
-            Stream requestStream = request.GetRequestStream();
-            requestStream.Write(postData, 0, postData.Length);
+                //request
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(postData, 0, postData.Length);
 
-            //response
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream responseStream = response.GetResponseStream();
+                
 
-            StreamReader streamReader = new StreamReader(responseStream, encoding);
-            string retString = streamReader.ReadToEnd();
+                //response
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                responseStream = response.GetResponseStream();
 
-            //关闭资源
-            streamReader.Close();
-            responseStream.Close();
+                streamReader = new StreamReader(responseStream, encoding);
+
+                retString = streamReader.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                //关闭资源
+                streamReader.Close();
+                responseStream.Close();
+            }
 
             return retString;
         }
